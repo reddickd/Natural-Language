@@ -3,6 +3,7 @@ import warnings
 import sys
 import logging
 
+
 # from keras.layers import Input, Embedding, merge
 # from keras.models import Model
 # import tensorflow as tf
@@ -33,7 +34,7 @@ from gensim.models import word2vec,KeyedVectors
 #             'Failed to verify ' + filename + '. Can you get to it with a browser?')
 #     return filename
 
-print("Takes a minute to load depending on the system . . .")
+print("Loading . . .")
 
 filename = '/Users/DavidsMac/Desktop/434naturallanguage/GoogleNews-vectors-negative300.bin.gz'
 model = KeyedVectors.load_word2vec_format(filename, binary=True)
@@ -75,7 +76,7 @@ print("Word embedding algorithm used: Word2Vec\nModel Used: Google News Vectors\
 while True:
 	userInput = input("Enter your command: " + '\n')
 	inputList = userInput.split(' ')
-	output = "This will be overwritten"
+	output = ""
 
 	#initial prints of specs
 	
@@ -89,31 +90,38 @@ while True:
 		sys.exit()
 
 	elif(len(inputList) == 2 and inputList[0] == "lock"): #lock command
-		#output = "lock command"
+		output = "Lock bolt"
 		result = model.similarity('bolt', inputList[1])
-		print(result)
+		#print(result)
 		if(result > .25):
-			print("Input: " + userInput + '\n' + "Output: " + output)
+			print("Input: " + userInput.capitalize() + '\n' + "Output: " + output)
+		else:
+			output = "no compatible command found"
+			print(output)
 
 	elif(len(inputList) == 2 and inputList[0] == "unlock"): #unlock command
-		#output = "unlock command"
+		output = "Unlock bolt"
 		result = model.similarity('bolt', inputList[1])
-		print(result)
+		#print(result)
 		if(result > .25):
-		 	print("Input: " + userInput + '\n' + "Output: " + output)
+		 	print("Input: " + userInput.capitalize() + '\n' + "Output: " + output)
+		else:
+			output = "no compatible command found"
+			print(output)
 
-	elif(len(inputList) == 3 and inputList[0] == "turn" and  inputList[1] == "on"): #turn on command
-		#output = "turn on command"  
+	elif(len(inputList) == 3 and inputList[0] == "turn" and  inputList[1] == "on"): #turn on command 
 		result = model.similarity('lamp', inputList[2]) 
 		result2 = model.similarity('camera', inputList[2])
-		print(result+' | '+result2)
+		
 		if(result>result2):
 			if(result > .3):
-		 		print("Input: " + userInput + '\n' + "Output: " + output)
-		else:
+		 		print("Input: " + userInput.capitalize() + '\n' + "Output: " + "Turn on lamp")
+		elif(result<result2):
 			if(result2 > .3):
-				print("Input: " + userInput + '\n' + "Output: " + output)
-		
+				print("Input: " + userInput.capitalize() + '\n' + "Output: " + "Turn on camera")
+		else:
+			output = "no compatible command found"
+			print(output)	
 
 	# elif(len(inputList) == 3 and inputList[0] == "turn" and  inputList[1] == "off"): #turn off command
 	# 	output = "turn off command"
@@ -121,14 +129,15 @@ while True:
 	# 	print(result)
 
 	elif(len(inputList) == 3 and inputList[0] == "turn" and  inputList[1] == "up"): #turn up command
-		#output = "turn up command"
+		output = "Turn up thermostat"
 		result = model.similarity('thermostat', inputList[2])
-		print(result)
+		#print(result)
 		if(result > .4):
-		 	print("Input: " + userInput + '\n' + "Output: " + output)
-
-	else:
-		output = "no compatible command found"
+		 	print("Input: " + userInput.capitalize() + '\n' + "Output: " + output)
+		else:
+			output = "no compatible command found"
+			print(output)
+	
 	print('\n')
 	#input word embedding shit
 
